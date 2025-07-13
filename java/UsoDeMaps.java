@@ -4,20 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /*
-🧠 Ejercicio: Contar palabras en una frase usando Map
-✅ Enunciado:
+Ejercicio: Contar palabras en una frase usando Map
+Enunciado:
 Escribe un programa en Java que cuente cuántas veces aparece cada palabra en una frase. Usa un Map<String, Integer> para almacenar las palabras como clave y su número de apariciones como valor.
-
-📝 Ejemplo de entrada:
+Ejemplo de entrada:
 
 "hola mundo hola java mundo"
-📌 Salida esperada:
+Salida esperada:
 
 hola: 2
 mundo: 2
 java: 1
-
-
 */
 
 public class UsoDeMaps {
