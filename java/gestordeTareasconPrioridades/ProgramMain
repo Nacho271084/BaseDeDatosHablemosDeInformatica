@@ -1,0 +1,43 @@
+import com.mycompany.gestordetareasconprioridades.GestorTareas;
+import com.mycompany.gestordetareasconprioridades.Tarea;
+import com.mycompany.gestordetareasconprioridades.excepciones.MiExcepcion;
+
+/*
+ Clase Main
+Es la que ejecuta el programa.
+Crea un GestorTareas.
+Añade tareas con agregarTarea().
+Muestra tareas con mostrarTareasOrdenadas().
+Elimina una con eliminarTarea().
+Lista de tareas ordenadas:
+Tarea: Estudiar Java | Prioridad: 1
+Tarea: Hacer ejercicio | Prioridad: 2
+Tarea: Lavar los platos | Prioridad: 3
+
+ Tarea eliminada con éxito.
+
+📌 Lista actualizada de tareas:
+Tarea: Estudiar Java | Prioridad: 1
+Tarea: Hacer ejercicio | Prioridad: 2
+ */
+public class programMain {
+    
+    public static void main(String[] args) throws MiExcepcion {
+        // Creamos una nueva instancia de gestorTareas llamada Nueva tarea.
+        GestorTareas NuevaTarea = new GestorTareas();
+        // Agregamos la tarea, instancia + método (agregamos la tarea y su prioridad)
+        NuevaTarea.agregarTarea(new Tarea("Estudiar java",1));
+        NuevaTarea.agregarTarea(new Tarea("Estudiar MySQL", 2));
+        NuevaTarea.agregarTarea(new Tarea("Estudiar Python",3));
+        
+        // Eliminamos la tarea:
+        
+        NuevaTarea.eliminarTarea("Estudiar java");
+        
+        // Mostrar la tarea:
+        
+        NuevaTarea.mostrarTareasOrdenadas();
+        
+    }
+    
+}
