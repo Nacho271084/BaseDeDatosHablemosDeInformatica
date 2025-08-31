@@ -1,0 +1,12 @@
+
+package com.mycompany.gestordetareasconprioridades.excepciones;
+// Creamos una clase con una excepción personalizada, esta extiende de la clase exceptión.
+public class MiExcepcion extends Exception{
+    
+    // Constructor de la clase:
+    
+    public MiExcepcion (String mensaje){
+            super(mensaje);
+    
+}
+}
