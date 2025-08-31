@@ -1,0 +1,62 @@
+package com.mycompany.gestordetareasconprioridades;
+
+import com.mycompany.gestordetareasconprioridades.excepciones.MiExcepcion;
+import java.awt.AWTEventMulticaster;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+// Esta clase es la encargada de realizar la tareas
+
+public class GestorTareas {
+    
+    // Creamos una lista para almacenar las tareas de tipo Tarea, recuerda la clase creada.
+    
+    List <Tarea> tareas = new ArrayList<Tarea>();
+   
+    // Métodos disponibles
+    // Este método agrega la tarea a la lista.
+    
+    public void agregarTarea(Tarea t)
+    {
+    tareas.add(t);
+        System.out.println("Se ha agregado la tarea con éxito.....");
+    };
+    
+    public void eliminarTarea(String descripcion) throws MiExcepcion // Borra la terea si coincide con la descripcción, en caso contrario lanza la excepción.
+    {
+        Iterator it = tareas.iterator();
+        boolean encontrada = false;
+        
+        while (it.hasNext()) {
+            Tarea t = (Tarea) it.next(); // obtenemos la tarea.
+            // Si la descripcción almacenada en la lista es igual a la descripción última.
+            // Borramos la descripcción.
+            // borramos los espacios.
+            if (t.getDescripcion().trim().equalsIgnoreCase(descripcion.trim())) 
+            {
+             it.remove(); // permite remover elemento mientras recorremos la lista.
+             encontrada = true; // Incializamos a true la variable encontrada.
+             break; // Salimos.
+            }
+            else
+            {
+                if (!encontrada) {
+                    throw new MiExcepcion("No se ha encontrado la tarea con la descripción  " + descripcion);
+                    
+                }
+            }
+            
+        }
+        
+    };
+     // Primero Ordena la lista y luego la imprime
+    public void mostrarTareasOrdenadas() 
+    {
+        for (Tarea tarea : tareas) {
+            System.out.println(tarea);
+        }
+    
+    }
+    
+}
