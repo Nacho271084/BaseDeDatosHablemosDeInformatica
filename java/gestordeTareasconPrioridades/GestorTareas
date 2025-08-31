@@ -23,33 +23,26 @@ public class GestorTareas {
         System.out.println("Se ha agregado la tarea con éxito.....");
     };
     
-    public void eliminarTarea(String descripcion) throws MiExcepcion // Borra la terea si coincide con la descripcción, en caso contrario lanza la excepción.
-    {
-        Iterator it = tareas.iterator();
-        boolean encontrada = false;
-        
-        while (it.hasNext()) {
-            Tarea t = (Tarea) it.next(); // obtenemos la tarea.
-            // Si la descripcción almacenada en la lista es igual a la descripción última.
-            // Borramos la descripcción.
-            // borramos los espacios.
-            if (t.getDescripcion().trim().equalsIgnoreCase(descripcion.trim())) 
-            {
-             it.remove(); // permite remover elemento mientras recorremos la lista.
-             encontrada = true; // Incializamos a true la variable encontrada.
-             break; // Salimos.
-            }
-            else
-            {
-                if (!encontrada) {
-                    throw new MiExcepcion("No se ha encontrado la tarea con la descripción  " + descripcion);
-                    
-                }
-            }
-            
+    public void eliminarTarea(String descripcion) throws MiExcepcion {
+    Iterator<Tarea> it = tareas.iterator();
+    boolean encontrada = false;
+
+    while (it.hasNext()) {
+        Tarea t = it.next();
+        if (t.getDescripcion().trim().equalsIgnoreCase(descripcion.trim())) {
+            it.remove();
+            encontrada = true;
+            System.out.println("Tarea eliminada con éxito: " + descripcion);
+            break;
         }
+    }
+
+    if (!encontrada) {
+        throw new MiExcepcion("No se ha encontrado la tarea con la descripción: " + descripcion);
+    }
+};
         
-    };
+    
      // Primero Ordena la lista y luego la imprime
     public void mostrarTareasOrdenadas() 
     {
