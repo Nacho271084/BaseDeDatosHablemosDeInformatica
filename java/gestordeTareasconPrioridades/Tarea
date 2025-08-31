@@ -1,0 +1,58 @@
+
+package com.mycompany.gestordetareasconprioridades;
+// La clase tarea implementa "Implement" la clase comparable de tipo Tarea:
+// Tendremos que importar su método abstracto *.
+public class Tarea implements Comparable<Tarea>{
+
+    // Atributos de la clase:
+    
+    private String descripcion;
+    private int prioridad; // (1 = alta, 2 = media, 3 = baja)
+   
+    // Constructor:
+
+    public Tarea(String descripcion, int prioridad) {
+        this.descripcion = descripcion;
+        this.prioridad = prioridad;
+    }
+    
+    // Añadimos los getter y setter:
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public int getPrioridad() {
+        return prioridad;
+    }
+
+    public void setPrioridad(int prioridad) {
+        this.prioridad = prioridad;
+    }
+    
+    
+    
+    // Método ToString modificado para informar de la tarea disponible:
+
+    @Override
+    public String toString() {
+        return "descripcion: " + descripcion + ", La prioridad es: " + prioridad;
+    }
+   
+    // Usamos la clase comparator, este nos permite definir un orden natural para los objeto de la clase.
+   
+    
+// * Sobreescribimos su método de la clase comparable, permite comparar dos objetos.
+    @Override
+    public int compareTo(Tarea a) {
+       // método de la clase Integer. en concreto compare, comparamos la prioridad con la recibida.
+       // Usamos This.prioridad para hacer referencia al atributo de la clase.
+       // comparamos la tarea recibida con la actual.
+        return Integer.compare(this.prioridad, a.prioridad);
+    }
+   
+}
