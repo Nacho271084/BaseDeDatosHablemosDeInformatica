@@ -1,0 +1,86 @@
+
+package conexion;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.UIManager;
+
+public class ConexionBaseDeDatos {
+    // Debes tener la base de datos creada con anterioridad.
+    // Creamos una tabla usuarios con nombre usuario y contraseña.
+   
+    private static final String HOST = "localhost";         // IP o dominio del servidor MySQL
+    private static final String PUERTO = "3306";            // Puerto (por defecto 3306)
+    private static final String BASE_DATOS = "tiendaonline"; // Nombre de tu base de datos
+    private static final String USUARIO = "root";           // Tu usuario de MySQL
+    private static final String CONTRASEÑA = "1234";            // Tu contraseña de MySQL
+
+    // 🔗 Construcción dinámica de la URL de conexión
+    private static final String URL = String.format(
+        "jdbc:mysql://%s:%s/%s?useSSL=false&serverTimezone=UTC",
+        HOST, PUERTO, BASE_DATOS
+    );
+   
+// este método permite insertar un usuario y una contraseña en la base de datos creada   
+   public static String comandoInsert = "INSERT INTO usuarios (usuario, contrasena) VALUES (?, ?)";
+    // Establecemos la conexion con la base de datos, pasando la URL, usuario y contraseña.
+    public static boolean conectarYguardarConsulta(String usuario, String constrasena) throws SQLException
+    {
+        try(Connection conexion = DriverManager.getConnection(URL,USUARIO,CONTRASEÑA);
+        PreparedStatement consultaAenviar = conexion.prepareStatement(comandoInsert)){
+        // pasamos los datos a la consulta con la instancia de la consulta preparada con el set
+        consultaAenviar.setString(1, usuario);
+        consultaAenviar.setString(2, constrasena);    
+        
+        // Ejecutamos la consulta y almacenamos el resultado:
+        
+        int filas = consultaAenviar.executeUpdate();
+        // Si filas es mayor a cero, significa que el usuario ha sido insertado.
+            if (filas > 0) 
+            {
+                System.out.println("Has insertado el usuario............"); 
+                return true;
+            }
+        
+        }catch(SQLException e){
+        e.printStackTrace(); 
+        System.out.println("Error en la conexión o en la insercción");
+        }     
+    return false;
+    }
+    // 1º Este método recibe un id. Lo usará para verificar en la consulta si el usuario existe.
+    // 2º Creamos la consulta para comprobar si el usuario existe dentro de la bd.
+    // 3º Envolvemos con try y catch.
+    // 4º Establecemos la conexion y preparamos la consulta, la usaremos para enviarla.
+    // 5º Si el resultado afecta a filas devuelve true. 
+    // 6º En caso contrario lanzará el error.
+    public static boolean siUsuarioExiste(int id) throws SQLException
+    {
+    String sql = "SELECT * FROM usuarios WHERE id = ?";
+    
+    try(Connection conexion = DriverManager.getConnection(URL,USUARIO,CONTRASEÑA);
+        PreparedStatement prepararConsultaParaEnviar = conexion.prepareStatement(sql))
+            {
+            prepararConsultaParaEnviar.setInt(1, id);
+            
+                
+            try(ResultSet resultado = prepararConsultaParaEnviar.executeQuery()){
+                
+              return resultado.next(); // True si encuentra el usuario
+  
+                
+            }catch(SQLException e)
+            {
+                e.printStackTrace();
+            }
+                
+            }
+         return false;
+    }
+
+
+
+}
