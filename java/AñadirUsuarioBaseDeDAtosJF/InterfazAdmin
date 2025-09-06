@@ -1,0 +1,179 @@
+
+package admin;
+
+import conexion.ConexionBaseDeDatos;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.sql.SQLException;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+public class InterfazAdmin extends JFrame {
+    // Constructor de la clase
+    public InterfazAdmin()
+            {
+                // Título y tamaño de la ventana.La tercera línea permite dececidir que se hará al cerrar la ventana.
+                setTitle("Panel de inicio de sesión");
+                setSize(200, 400);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                
+                // Añadimos una descripcción con Jlabel
+                JLabel primeraDescripcion = new JLabel(
+                "<html>Proporciona el id que has recibido.<br>"
+                + "Toca en el botón de comprobar, este botón permite verificar<br>"
+                + "si ya existes en el sistema:<br><br></html>" // salto extra
+                );
+
+                JLabel segundaDescripcion = new JLabel(
+                "<html>En caso de no existir el usuario,<br>"
+                + "proporciona el nombre y la contraseña,<br>"
+                + "toca en guardar.</html>"
+                );
+                
+                    
+                JTextField campoTextoUsuario = new JTextField();
+                campoTextoUsuario.setPreferredSize(new Dimension(100,40));
+                campoTextoUsuario.setBackground(Color.white);
+                JPasswordField campoTextoContrasena = new JPasswordField();
+                campoTextoContrasena.setPreferredSize(new Dimension(100,40));
+                JTextField idUsuario = new JTextField();
+                idUsuario.setPreferredSize(new Dimension(80,20));
+                
+                
+                // Botón de enviar:
+                
+                JButton botonGuardar = new JButton("Guardar");
+                botonGuardar.setPreferredSize(new Dimension(100,40));
+                
+                // Botón de comprobar si el usuario existe:
+                
+                JButton botonComprobar = new JButton("Comprobar");
+                botonComprobar.setPreferredSize(new Dimension(100,40));
+                
+                // Botón de resetear:
+               JButton botonResetear = new JButton("Resetear");
+               botonResetear.setPreferredSize(new Dimension(100,40));
+               
+               
+               // Eventos con los botones:
+   // Si queremos comprobar con otros valores almacenados en la una clase.
+//   botonEnviar.addActionListener((e) -> {
+//    // obtenemos el String de campo de cadena de texto.
+//    String usuarioIngresado = campoTextoUsuario.getText();
+//    
+//    String contrasenaIngresada = new String(campoTextoContraseña.getPassword());
+//    // Comparamos el usario ingresado obtenido del jTexfield con el nombre de usuario y contraseña de la clase Usuario. 
+//    if (usuarioIngresado.equals(Usuario.NOMBRE) && contrasenaIngresada.equals(Usuario.CONTRASEÑA)) {
+//        // imprimimos un mensaje si el usuario está en el sistema.
+//        JOptionPane.showMessageDialog(null, "Has accedido perfectamente");
+//    } else {
+//        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos");
+//    }
+//});    
+        // Evento botón comprobar → verificar si existe en BD
+        // usamos el botón de comprobar + añadir acción y lambda, para el botón hacer lo siguiente.
+
+        botonComprobar.addActionListener((e) -> {
+        // Variable para comprobar el id 
+        int id = Integer.parseInt(idUsuario.getText());
+
+                    try {
+                        if (ConexionBaseDeDatos.siUsuarioExiste(id)) {
+                            JOptionPane.showMessageDialog(null, "El usuario existe en la base dedatos");
+                        }
+                        else{JOptionPane.showMessageDialog(null, "El usuario no existe en la base de datos");}
+                    
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        
+                    }
+  
+        }); 
+        
+
+
+         // Evento botón enviar → validar en BD
+        // usamos el botón de enviar + añadir acción y lambda, para el botón hacer lo siguiente.
+            botonGuardar.addActionListener ((e) -> {
+                // Almacenamso el dato obtenido en el campo de textoUsuario.
+                String usuarioIngresado = campoTextoUsuario.getText();
+                // Hacemos lo mismo con la contraseña:
+                String contrasenaIngresada = new String (campoTextoContrasena.getPassword());
+                    
+                    try {
+                        // Importamos la clase conexión de base de datos + el método que permite agregarlo y la conexión
+                        // Si todo va bien, se ejecuta el mensaje de usuario ingresado correctamente.
+                        // si va mal dará un error y dirá que no se ha podido acceder.
+                        if (ConexionBaseDeDatos.conectarYguardarConsulta(usuarioIngresado, contrasenaIngresada))
+                        {
+                            JOptionPane.showMessageDialog(null, "Has accedido perfectamente..");
+                        }
+                        else{JOptionPane.showMessageDialog(null, "No has podido acceder");}
+                    } catch (SQLException ex) {
+                        System.out.println("Error al conectar");
+                    }
+            });
+            
+               // Evento botón resetear → limpiar campos 
+               
+               botonResetear.addActionListener((e) -> {
+               // Asignamos al campo de usuario un espacio, de este modo vaciamos el texto.    
+                campoTextoUsuario.setText("");
+                campoTextoContrasena.setText("");
+                idUsuario.setText("");
+               });
+        
+  
+                // Creamos un contenedor y establecemos unas dimensiones. 
+                JPanel contenedor = new JPanel();
+                setSize(400, 400);
+                JPanel contenedorDos = new JPanel();
+                JPanel contenedorTres = new JPanel();
+                JPanel contenedorCuatro = new JPanel();
+                
+                contenedor.add(new JLabel("Usuario :"));
+                contenedor.add(campoTextoUsuario);
+                contenedor.add(new JLabel("Contraseña :"));
+                contenedor.add(campoTextoContrasena);
+                
+                contenedorDos.add(botonGuardar);
+                contenedorDos.add(botonResetear);
+                
+                
+       
+                // Añadimos el texto a la ventana superior
+                contenedorTres.add(primeraDescripcion);
+                contenedorTres.add(segundaDescripcion);
+                contenedorTres.add(new JLabel("id de usuario: "));
+                contenedorTres.add(idUsuario);
+                contenedorTres.add(botonComprobar);
+                
+                
+                // Añadimos el contenedor al jframe
+                // Los campos de entrada de texto en la zona superior.
+                add(contenedor,BorderLayout.CENTER);
+                // Colocación de los botones en la zona inferior al final de la página.
+                add(contenedorDos,BorderLayout.PAGE_END);
+                // Colocación del texto en la zona superior de la página
+                add(contenedorTres,BorderLayout.PAGE_START);
+                
+            }
+    public static void main(String[] args) {
+       // invokeLater asegura que la creación de la ventana 
+       // (InterfazAdmin) y todas las operaciones de Swing se 
+       // ejecuten dentro del hilo especial de Swing (EDT). 
+        SwingUtilities.invokeLater(() -> {
+        InterfazAdmin admin = new InterfazAdmin();
+        admin.setVisible(true);
+    });
+        
+    }
+
+}
