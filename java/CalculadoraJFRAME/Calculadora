@@ -1,0 +1,122 @@
+package Calculadora;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+// Mi calculadora extiende de JFrame que permite crear interfaces gráficas.
+public class CalculadoraJFRAME extends JFrame{
+
+// Variables estáticas que podrás llamarlas desde cualquier parte del código.
+public static double suma = 0;
+public static double promedio = 0;
+public static double max;
+public static double min;
+public static double nota;
+public static int totalNotas;
+public static int campoDeTextoListiner;
+    // constructor
+    public CalculadoraJFRAME ()
+            {
+                // 1º Establecemos el título de la ventana.
+                // 2º Establecemos amarillo para el color del fondo.
+                // 3º Preferncias de dimensión y creamos una instancia de la clase dimensión
+                // las medidas son 200 por 400.
+                // 4º Que se hará con la ventana, en este caso la ventana se cierra al pulsar en la x.
+                setTitle("Calculadora de notas");
+                setSize(500,500);
+                setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                
+                // Primero ingresará el número de notas a ingresar
+                
+                JLabel textoUno = new JLabel("<html> 1º Ingresa primero el número de notas a ingresar.<br>"
+                        + "2º Pulsa ENTER <br>"
+                        + "3º Introduce las notas del 1 al 10.<br>"
+                        + "4º Primero obtienes la nota más alta, la baja y luego el promedio.</html>"
+                
+                );
+                
+            
+                // 1º Es necesario crear un campo de texto para la inserción de datos.
+                // 2º Tamaño del campo de entrada de texto.
+                // 3º El usuario introducirá el numero de notas a ingresar.
+                JTextField campoDeTexto = new JTextField();
+                campoDeTexto.setPreferredSize(new Dimension(100,40));
+                
+                // 1º Creamos un contenedor llamado contenedorUno.
+                // 2º Añadimos el campo de texto al contenedor.
+                JPanel contenedorUno = new JPanel();
+                JPanel contenedorDos = new JPanel();
+
+                contenedorUno.add(textoUno);
+                contenedorDos.add(campoDeTexto);
+                
+                // 1º Añadimos el contenedor a la ventana ponemos una coma y establecemos la ubicación.
+                // Añadimos a la primera línea.
+                add(contenedorUno,BorderLayout.LINE_START);
+                add(contenedorDos,BorderLayout.CENTER);
+                
+                // Añadimos el código y los escuchadores de eventos.
+                
+                campoDeTexto.addActionListener((e) -> { 
+               // Almacenamos el dato del campo de entrada, recuerda recibes texto "String" y necesitamos valor numérico.
+               // El try permite capturar el error si introduce una letra y no el número que esperamos
+               try{   
+               campoDeTextoListiner = Integer.parseInt(campoDeTexto.getText());
+               }catch(NumberFormatException n)
+               {
+               
+               JOptionPane mensajeError = new JOptionPane();
+               mensajeError.showMessageDialog(null, "Debes proporcionar un valor numérico.");
+               // No continua la ejecución de la siguiente línea.
+               return;
+               };
+              
+                // Mientras que el dato sea mayor a cero irá ejecutando el bucle.
+                // En cada vuelta resta y devuelve la variable, es un pre-decremento.
+                totalNotas = campoDeTextoListiner;
+                 max = Double.MIN_VALUE;
+                 min = Double.MAX_VALUE;
+                    while (campoDeTextoListiner > 0) 
+                    {
+                        
+                       campoDeTextoListiner--;
+                       // Pedir dato al usuario en ventana emergente
+                       nota = Double.parseDouble(JOptionPane.showInputDialog(
+                               CalculadoraJFRAME.this,"Intruce la nota deseada"));
+                       
+                       suma +=nota;
+                      
+                       if (nota > max ) 
+                       {
+                         max = nota;
+                       }
+                       
+                        if (nota < min) 
+                        {
+                        min = nota;
+                        }
+                       
+                    }
+                    promedio = suma / totalNotas;
+                   JOptionPane.showMessageDialog(null, "La nota máxima es: " + max);
+                   JOptionPane.showMessageDialog(null, "La nota mínima es: " + min);
+                   JOptionPane.showMessageDialog(null, "El promedio es: " + promedio);
+
+                });
+                    
+            }
+    
+    // clase main
+    
+    public static void main(String[] args) {
+        // 1º Creamos una instancia de calculadoraJFRAME
+        // 2º Hacemos la ventana visible, si ejecutas la clase, verás tu primera ventana.
+        CalculadoraJFRAME ventana = new CalculadoraJFRAME();
+        ventana.setVisible(true);
+    }
+    
+}
